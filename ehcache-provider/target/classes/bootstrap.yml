@@ -1,0 +1,43 @@
+server:
+  port: 8585
+eureka:
+  instance:
+    preferIpAddress: true
+    instanceId: ${spring.application.name}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/  #注册中心地址
+spring:
+  application:
+    name: ehcache-provider
+#druid:
+#  boot:
+#    admin:
+#      url:  http://localhost:7002/
+#  zipkin:
+#    base-url: http://192.168.13.51:9411/
+
+druid:
+  jdbc:
+    driveClassName: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/db_ehcache
+    jdbcUsername: root
+    jdbcPassword: sunwei
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 3
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 'x'
+    testWhileIdle: true
+    testOnBrowwon: false
+    testOnReturn: false
+    filters: stat,wall
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  type-aliases-package: com.huntkey.rx.ehcache.common.model
+  configLocation: classpath:mybatis-config.xml
+
+debug: true

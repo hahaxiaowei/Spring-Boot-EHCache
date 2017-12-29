@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Spring-Boot-EHCache.iml" filepath="$PROJECT_DIR$/Spring-Boot-EHCache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ehcache-common/ehcache-common.iml" filepath="$PROJECT_DIR$/ehcache-common/ehcache-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ehcache-provider/ehcache-provider.iml" filepath="$PROJECT_DIR$/ehcache-provider/ehcache-provider.iml" />
+    </modules>
+  </component>
+</project>

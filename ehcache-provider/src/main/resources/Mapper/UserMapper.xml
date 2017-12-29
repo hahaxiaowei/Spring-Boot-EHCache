@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--将数据库和javaBean相关联-->
+<mapper namespace="com.huntkey.rx.ehcache.provider.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="com.huntkey.rx.ehcache.common.model.User">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <id column="userid" jdbcType="BIGINT" property="userId"/>
+        <id column="username" jdbcType="VARCHAR" property="userName"/>
+        <id column="name" jdbcType="VARCHAR" property="name"/>
+        <id column="age" jdbcType="TINYINT" property="age"/>
+        <id column="balance" jdbcType="VARCHAR" property="balance"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userid,username,`name`,age,balance
+    </sql>
+
+    <!--插入新的用户信息-->
+    <insert id="insert" parameterType="com.huntkey.rx.ehcache.common.model.User">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into tbl_user
+        (id,userid,username,`name`,age,balance)
+        values(
+        #{id,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT},
+        #{userName,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{age,jdbcType=VARCHAR},
+        #{balance,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--根据主键删除用户信息-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+      delete from tbl_user
+      where id= #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <!--更新用户信息-->
+    <update id="updateByPrimaryKey" parameterType="com.huntkey.rx.ehcache.common.model.User">
+        update tbl_user
+        set
+        userid= #{userId,jdbcType=BIGINT},
+        username= #{userName,jdbcType=VARCHAR},
+        `name`= #{name,jdbcType=VARCHAR},
+        age= #{age,jdbcType=VARCHAR},
+        balance= #{balance,jdbcType=VARCHAR}
+        where id= #{id,jdbcType=VARCHAR}
+    </update>
+
+    <!--根据id查询用户信息-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_user
+        where id= #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--无条件查询用户信息-->
+    <select id="selectAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_user
+    </select>
+
+    <!--根据用户userId和用户名查询用户信息-->
+    <select id="selectUserByAcount"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_user
+        where userid = #{userId}and`name`= #{name}
+    </select>
+</mapper>
