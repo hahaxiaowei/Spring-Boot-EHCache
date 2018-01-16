@@ -71,6 +71,6 @@
         select
         <include refid="Base_Column_List"/>
         from tbl_user
-        where userid = #{userId}and`name`= #{name}
+        where userid= #{userId,jdbcType=BIGINT} and `name`= #{name,jdbcType=VARCHAR}
     </select>
 </mapper>

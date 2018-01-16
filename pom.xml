@@ -14,6 +14,14 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.4.5.RELEASE</version>
     </parent>
+    <dependencies>
+        <!--httpClient工具类依赖-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+    </dependencies>
 
     <modules>
         <module>ehcache-provider</module>

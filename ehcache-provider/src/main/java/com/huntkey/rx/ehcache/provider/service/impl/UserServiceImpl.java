@@ -1,9 +1,12 @@
 package com.huntkey.rx.ehcache.provider.service.impl;
 
+import com.github.pagehelper.util.StringUtil;
 import com.huntkey.rx.ehcache.common.model.User;
 import com.huntkey.rx.ehcache.common.util.Result;
 import com.huntkey.rx.ehcache.provider.dao.UserDao;
 import com.huntkey.rx.ehcache.provider.service.UserService;
+import com.mysql.jdbc.StringUtils;
+import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +66,24 @@ public class UserServiceImpl implements UserService {
         return userDao.selectAllUser();
     }
 
+    @Cacheable(value = CACHE_NAME_B, key = "#userId+'_'+#userName")
     @Override
-    public List<User> selectUserByAcount(Integer userId, String userName) {
-        return userDao.selectUserByAcount(userId,userName);
+    public Result selectUserByAcount(Integer userId, String userName) {
+        Result result = new Result();
+        try {
+            List<User> list = userDao.selectUserByAcount(userId, userName);
+            if (list.size() == 0 || list.isEmpty()) {
+                result.setRetCode(Result.RECODE_ERROR);
+                result.setErrMsg("查找数据不存在");
+                return result;
+            }
+            result.setData(list);
+        } catch (Exception e) {
+            result.setRetCode(Result.RECODE_ERROR);
+            result.setErrMsg("方法执行出错");
+            logger.error("方法执行出错", e);
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }

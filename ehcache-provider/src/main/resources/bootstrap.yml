@@ -1,22 +1,19 @@
-server:
-  port: 8585
+spring:
+  application:
+    name: spring-boot-ehcache
+#  profiles:
+#    active: dev
+#  cloud:
+#    config:
+#      profile: dev
+#      uri: http://10.3.99.25:8888
 eureka:
   instance:
     preferIpAddress: true
     instanceId: ${spring.application.name}:${server.port}
   client:
     serviceUrl:
-      defaultZone: http://localhost:1111/eureka/  #注册中心地址
-spring:
-  application:
-    name: ehcache-provider
-#druid:
-#  boot:
-#    admin:
-#      url:  http://localhost:7002/
-#  zipkin:
-#    base-url: http://192.168.13.51:9411/
-
+      defaultZone: http://10.3.99.25:8801/eureka/ #服务注册中心地址
 druid:
   jdbc:
     driveClassName: com.mysql.jdbc.Driver
@@ -34,10 +31,10 @@ druid:
     testOnBrowwon: false
     testOnReturn: false
     filters: stat,wall
-
 mybatis:
   mapperLocations: classpath:mapper/*.xml
   type-aliases-package: com.huntkey.rx.ehcache.common.model
   configLocation: classpath:mybatis-config.xml
-
 debug: true
+server:
+  port: 8585

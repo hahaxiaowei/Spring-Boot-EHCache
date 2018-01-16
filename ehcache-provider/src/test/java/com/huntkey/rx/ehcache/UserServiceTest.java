@@ -1,6 +1,7 @@
 package com.huntkey.rx.ehcache;
 
 import com.huntkey.rx.ehcache.common.model.User;
+import com.huntkey.rx.ehcache.common.util.HttpClientUtil;
 import com.huntkey.rx.ehcache.common.util.Result;
 import com.huntkey.rx.ehcache.provider.EhcacheProviderApplication;
 import com.huntkey.rx.ehcache.provider.service.UserService;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sunwei on 2017/12/21 Time:9:05
@@ -57,6 +60,31 @@ public class UserServiceTest {
     }
 
     @Test
+    public void test() {
+        String url = "http://" + "10.3.99.25:8585" + "/user" + "/insert";
+        User user = new User();
+        user.setUserId(1000);
+        user.setUserName("nihao");
+        user.setName("小红");
+        user.setAge(20);
+        user.setBalance("3000");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userid", user.getUserId());
+        map.put("username", user.getUserName());
+        map.put("age", user.getAge());
+        map.put("name", user.getName());
+        map.put("balance", user.getBalance());
+        String answer = "";
+        try {
+            answer = HttpClientUtil.httpPostRequest(url, map);
+        } catch (Exception e) {
+            logger.error("方法执行出错", e);
+            throw new RuntimeException(e);
+        }
+        logger.info("结果为" + answer);
+    }
+
+    @Test
     public void update() {
         User user = new User();
 //        user.setId(String.valueOf(UUID.randomUUID()));
@@ -90,7 +118,7 @@ public class UserServiceTest {
             throw new RuntimeException(e);
         }
         logger.info("**************************************");
-        logger.info("查询结果"+result);
+        logger.info("查询结果" + result);
         logger.info("**************************************");
     }
 
@@ -101,8 +129,8 @@ public class UserServiceTest {
         List<User> allUsers = userService.selectAllUser();
         Result result = new Result();
         result.setData(allUsers);
-        logger.info("查询的数据条数"+allUsers.size());
-        logger.info("查询的所有数据为"+ result);
+        logger.info("查询的数据条数" + allUsers.size());
+        logger.info("查询的所有数据为" + result);
         User lastUser = allUsers.get(allUsers.size() - 1);
         String lastUserUsername = lastUser.getUserName();
         String indexString = lastUserUsername.substring(4);
@@ -117,16 +145,16 @@ public class UserServiceTest {
         user1.setAge(20);
         user1.setBalance("1000");
         int tag = userService.insert(user1);
-        if (tag == 0){
+        if (tag == 0) {
             throw new CacheException("用户对象插入数据库失败");
         }
         logger.info("**********************************");
-        logger.info("插入数据的结果"+tag);
+        logger.info("插入数据的结果" + tag);
         logger.info("**********************************");
         allUsers = userService.selectAllUser();
         lastUser = allUsers.get(allUsers.size() - 1);
         logger.info("***********************************");
-        logger.info("最后一个用户的ID为："+lastUser.getId());
+        logger.info("最后一个用户的ID为：" + lastUser.getId());
         logger.info("************************************");
         String lastId = lastUser.getId();
 
@@ -150,12 +178,12 @@ public class UserServiceTest {
         user2.setAge(lastUser.getAge() + 10);
         user2.setBalance(String.valueOf(user2.getAge()));
         logger.info("******************************");
-        logger.info("需要修改的数据"+user2.toString());
+        logger.info("需要修改的数据" + user2.toString());
         logger.info("******************************");
         try {
             User user = userService.updateByPrimaryKey(user2);
-            logger.info("===========  ==== 修改数据 == {} ==成功"+user.toString());
-        } catch (CacheException e){
+            logger.info("===========  ==== 修改数据 == {} ==成功" + user.toString());
+        } catch (CacheException e) {
             e.printStackTrace();
         }
         try {
@@ -164,7 +192,7 @@ public class UserServiceTest {
 //            logger.info("=============清除结果================");
 //            logger.info(" "+result1);
             logger.info("===========  ====修改后再次查询数据");
-            User user  = userService.selectByPrimaryKey(lastId);
+            User user = userService.selectByPrimaryKey(lastId);
             logger.info("===========  ====修改后再次查询数据结果: {}", user.toString());
             logger.info("执行结束");
         } catch (Exception e) {

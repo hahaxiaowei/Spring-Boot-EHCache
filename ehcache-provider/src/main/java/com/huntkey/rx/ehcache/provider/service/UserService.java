@@ -20,7 +20,7 @@ public interface UserService {
 
     User selectByPrimaryKey(String id);
 
-    List<User> selectUserByAcount(@Param("userId") Integer userId, @Param("name") String userName);
+    Result selectUserByAcount(@Param("userId") Integer userId, @Param("name") String userName);
 
     List<User> selectAllUser();
 }

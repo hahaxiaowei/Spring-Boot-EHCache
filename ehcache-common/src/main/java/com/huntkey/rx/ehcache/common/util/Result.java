@@ -1,6 +1,8 @@
 package com.huntkey.rx.ehcache.common.util;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
 	public static Integer RECODE_SUCCESS = Integer.valueOf(1);
 	public static Integer RECODE_ERROR = Integer.valueOf(0);
 	public static Integer RECODE_UNLOGIN = Integer.valueOf(-1);

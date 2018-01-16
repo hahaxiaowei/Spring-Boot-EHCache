@@ -99,15 +99,7 @@ public class UserController {
     @RequestMapping(value = "/selectUserByAcount", method = RequestMethod.GET)
     public Result selectUserByAcount(@RequestParam Integer userId, @RequestParam String userName) {
         Result result = new Result();
-        try {
-            List<User> list = userService.selectUserByAcount(userId, userName);
-            result.setData(list);
-        } catch (Exception e) {
-            result.setRetCode(Result.RECODE_ERROR);
-            result.setErrMsg("方法执行出错");
-            logger.error("selectAllUser方法执行出错", e);
-            throw new RuntimeException(e);
-        }
+        result = userService.selectUserByAcount(userId,userName);
         return result;
     }
 
